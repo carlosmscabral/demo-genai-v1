@@ -86,7 +86,7 @@ steps:
       apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
       apigeecli token cache --metadata-token
 
-      REV=$(apigeecli apis create bundle - n test-me-please -f "/apiproxy" --disable-check | jq '.revision' -r)
+      REV=$(apigeecli apis create bundle - n test-me-please -f "./apiproxy" --disable-check | jq '.revision' -r)
 
   #   # Deploy using the Apigee credentials from above
   # - name: "gcr.io/cloud-builders/mvn"
