@@ -45,7 +45,7 @@ steps:
       - |
         #setup preferences
         ls
-        ls /workspace
+        ls /bin/sh
 
   # - name: ghcr.io/apigee/apigeecli:latest
   #   id: 'Create and deploy bundle with apigeecli'
