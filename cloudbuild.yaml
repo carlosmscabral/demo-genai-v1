@@ -43,9 +43,10 @@ steps:
     args:
       - -c
       - |
-      #setup preferences
-      ls
-      whereis sh
+        #setup preferences
+        ls
+        whereis sh
+        
   # - name: ghcr.io/apigee/apigeecli:latest
   #   id: 'Create and deploy bundle with apigeecli'
   #   script: |
