@@ -18,8 +18,8 @@ steps:
     script: |
       #!/usr/bin/env bash
 
-      apt-get update -q 
-      apt-get -y install jq -q
+      apt-get update > /dev/null
+      apt-get -y install jq > /dev/null
 
       # Config based on branch name
       if [ "$BRANCH_NAME" = "main" ]
@@ -32,7 +32,7 @@ steps:
           echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       fi
 
-      echo "$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
+      echo "$(cat ./config/default.json | jq .apiConfig.proxyName) | tr -d '"' " > /workspace/proxyName.txt
 
       cat /workspace/apigeeEnv.txt
       cat /workspace/proxyName.txt
@@ -43,8 +43,8 @@ steps:
     script: |
       #!/usr/bin/env bash
 
-      apt-get update -q
-      apt-get -y install jq curl zip unzip -q
+      apt-get update > /dev/null
+      apt-get -y install jq curl zip unzip > /dev/null
 
       curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash
       export PATH=$PATH:$HOME/.apigeecli/bin
