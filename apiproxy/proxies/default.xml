@@ -15,7 +15,7 @@
     </Flow>
   </Flows>
   <HTTPProxyConnection>
-    <BasePath>/</BasePath>
+    <BasePath>/v1/demo-genai</BasePath>
   </HTTPProxyConnection>
   <RouteRule name="default">
     <TargetEndpoint>default</TargetEndpoint>
