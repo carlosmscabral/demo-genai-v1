@@ -70,9 +70,8 @@ steps:
           sed "s/[^A-Za-z0-9]/-/g")\"" >> env.txt
         fi
 
-        echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
+        #  echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
         echo "export PROXY_NAME=$(cat ./config/default.json| jq .apiConfig.proxyName)" >> env.txt
-        cat env.txt
         # echo "[BUILD CONFIG]"
         # echo
         # cat env.txt | sed "s/APIGEE_BUILD_PASS=.*/APIGEE_BUILD_PASS=[hidden]/g" | \
@@ -86,9 +85,8 @@ steps:
     - -c
     - |
 
-      # source env.txt
-      ls 
-      cat env.txt
+      source env.txt
+
       # setup preferences
       apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
       apigeecli token cache --metadata-token
