@@ -44,10 +44,10 @@ steps:
       #!/usr/bin/env bash
 
       apt-get update
-      apt-get -y install jq
-      apt-get -y install curl
-      
+      apt-get -y install jq curl
+
       curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | sh -
+      export PATH=$PATH:$HOME/.apigeecli/bin
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
       APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
@@ -57,7 +57,6 @@ steps:
       apigeecli token cache --metadata-token
 
       REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
-
       apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
 
 
