@@ -52,6 +52,7 @@ steps:
 
       echo "--- Fetching apigeecli"
       curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash
+      export PATH=$PATH:$HOME/.apigeecli/bin
       echo "--- Done fetching apigeecli"
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
