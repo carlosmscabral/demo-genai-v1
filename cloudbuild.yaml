@@ -43,6 +43,10 @@ steps:
     script: |
       #!/usr/bin/env bash
 
+      apt-get update
+      apt-get -y install jq
+      apt-get -y install curl
+      
       curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | sh -
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
