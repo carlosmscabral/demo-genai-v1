@@ -95,7 +95,7 @@ steps:
 
       REV=$(apigeecli apis create bundle -n "$${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
 
-      apigeecli apis deploy --wait --name "$${PROXY_NAME}" --ovr --rev "$${REV}" --env "$S{APIGEE_ENV}" --disable-check
+      apigeecli apis deploy --wait --name "$${PROXY_NAME}" --ovr --rev "$${REV}" --env "$${APIGEE_ENV}" --disable-check
 
 
   #   # Deploy using the Apigee credentials from above
