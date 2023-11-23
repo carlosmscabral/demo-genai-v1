@@ -51,7 +51,7 @@ steps:
       echo "--- Downloading finished"
 
       echo "--- Fetching apigeecli"
-      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash
+      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash > /dev/null
       export PATH=$PATH:$HOME/.apigeecli/bin
       echo "--- Done fetching apigeecli"
 
@@ -65,7 +65,7 @@ steps:
       echo "--- Creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
       REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
       apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
-      echo "--- Done creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
+      echo "--- Done creating and deploying ${PROXY_NAME} with revision ${REV} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
 
 
   #   # Deploy using the Apigee credentials from above
