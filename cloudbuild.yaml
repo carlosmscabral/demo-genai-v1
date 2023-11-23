@@ -37,21 +37,30 @@ steps:
       cat /workspace/apigeeEnv.txt
       cat /workspace/proxyName.txt
 
-  - name: ghcr.io/apigee/apigeecli:latest
-    id: 'Create and deploy bundle with apigeecli'
-    script: |
-        #!/usr/local/bin/sh
+  - id: 'Run apigeecli commands'
+    name: ghcr.io/apigee/apigeecli:latest
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+      #setup preferences
+      ls
+      whereis sh
+  # - name: ghcr.io/apigee/apigeecli:latest
+  #   id: 'Create and deploy bundle with apigeecli'
+  #   script: |
+  #       #!/usr/local/bin/sh
 
-        PROXY_NAME=$(cat /workspace/proxyName.txt)
-        APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
+  #       PROXY_NAME=$(cat /workspace/proxyName.txt)
+  #       APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
 
-        # setup preferences
-        apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
-        apigeecli token cache --metadata-token
+  #       # setup preferences
+  #       apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
+  #       apigeecli token cache --metadata-token
 
-        REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
+  #       REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
 
-        apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
+  #       apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
 
 
   #   # Deploy using the Apigee credentials from above
