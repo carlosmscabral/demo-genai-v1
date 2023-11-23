@@ -13,29 +13,29 @@
 #  limitations under the License.
 
 steps:
-  - name: 'ubuntu'
-    id: "Set configs"
-    script: |
-      #!/usr/bin/env bash
+  # - name: 'ubuntu'
+  #   id: "Set configs"
+  #   script: |
+  #     #!/usr/bin/env bash
 
-      apt-get update
-      apt-get -y install jq
+  #     apt-get update
+  #     apt-get -y install jq
 
-      # Config based on branch name
-      if [ "$BRANCH_NAME" = "main" ]
-      then
-          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-      elif [ "$BRANCH_NAME" = "prod" ]
-      then
-          echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
-      else
-          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-      fi
+  #     # Config based on branch name
+  #     if [ "$BRANCH_NAME" = "main" ]
+  #     then
+  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+  #     elif [ "$BRANCH_NAME" = "prod" ]
+  #     then
+  #         echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+  #     else
+  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+  #     fi
 
-      echo "$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
+  #     echo "$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
 
-      cat /workspace/apigeeEnv.txt
-      cat /workspace/proxyName.txt
+  #     cat /workspace/apigeeEnv.txt
+  #     cat /workspace/proxyName.txt
 
   - id: 'Run apigeecli commands'
     name: ghcr.io/apigee/apigeecli:latest
@@ -45,8 +45,8 @@ steps:
       - |
         #setup preferences
         ls
-        whereis sh
-        
+        ls /workspace
+
   # - name: ghcr.io/apigee/apigeecli:latest
   #   id: 'Create and deploy bundle with apigeecli'
   #   script: |
