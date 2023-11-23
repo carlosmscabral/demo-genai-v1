@@ -52,6 +52,9 @@ steps:
       - "-c"
       - |-
 
+        apt-get update
+        apt-get -y install jq
+        
         # Config based on branch name
         if [ "$BRANCH_NAME" = "main" ]
         then
@@ -66,8 +69,6 @@ steps:
           echo "export APIGEE_DEPLOYMENT_SUFFIX=\"-$(echo $BRANCH_NAME | \
           sed "s/[^A-Za-z0-9]/-/g")\"" >> env.txt
         fi
-
-        apt-get install jq
 
         echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
         echo "export PROXY_NAME=\"$(cat ./config/default.json| jq .apiConfig.proxyName)\"" >> env.txt
