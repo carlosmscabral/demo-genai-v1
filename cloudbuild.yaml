@@ -69,7 +69,7 @@ steps:
   - id: 'Create and deploy bundle with apigeecli'
     name: ghcr.io/apigee/apigeecli:latest
     script: |
-      #!/usr/bin/env bash
+      #!/usr/bin/env sh
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
       APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
