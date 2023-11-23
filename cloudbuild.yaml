@@ -45,7 +45,7 @@ steps:
   #       npm run unit-test
     # Fetch Apigee credentials
     # and set branch specific config parameters
-  - name: gcr.io/cloud-builders/ubuntu
+  - name: 'ubuntu'
     id: "Set configs"
     script: |
       #!/usr/bin/env bash
