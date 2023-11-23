@@ -50,8 +50,8 @@ steps:
     script: |
       #!/usr/bin/env bash
 
-      # apt-get update
-      # apt-get -y install jq
+      apt-get update
+      apt-get -y install jq
 
       # Config based on branch name
       if [ "$BRANCH_NAME" = "main" ]
@@ -68,8 +68,7 @@ steps:
           sed "s/[^A-Za-z0-9]/-/g")\"" >> env.txt
       fi
 
-      #  echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
-      echo "export PROXY_NAME=$(cat ./config/default.json| jq .apiConfig.proxyName)" >> env.txt
+      echo "export PROXY_NAME=$(cat ./config/default.json | jq .apiConfig.proxyName)" >> env.txt
       ls
       cat env.txt
 
@@ -133,6 +132,8 @@ steps:
   #       gs://${PROJECT_ID}_cloudbuild/reports/$BUILD_ID/coverage && \
   #       gsutil cp ./report.*.html \
   #       gs://${PROJECT_ID}_cloudbuild/reports/$BUILD_ID
+options:
+  automapSubstitutions: true
 substitutions:
   _DEPLOYMENT_ORG: cabral-apigee
   _APIGEE_TEST_ENV: dev
