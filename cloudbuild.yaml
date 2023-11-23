@@ -69,7 +69,7 @@ steps:
 
 
         echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
-        echo "export PROXY_NAME=$(cat ./config/default.json| jq .apiConfig.proxyName)" >> env.txt
+        echo "export PROXY_NAME=\"$(cat ./config/default.json| jq .apiConfig.proxyName)\"" >> env.txt
         cat env.txt
         ls
 
