@@ -44,9 +44,9 @@ steps:
       #!/usr/bin/env bash
 
       apt-get update
-      apt-get -y install jq curl
+      apt-get -y install jq curl zip unzip
 
-      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | sh -
+      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash
       export PATH=$PATH:$HOME/.apigeecli/bin
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
