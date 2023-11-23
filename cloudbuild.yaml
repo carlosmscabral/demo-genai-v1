@@ -70,6 +70,8 @@ steps:
 
         echo "export APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
         echo "export PROXY_NAME=$(cat ./config/default.json| jq .apiConfig.proxyName)" >> env.txt
+        cat env.txt
+        ls
 
         # echo "[BUILD CONFIG]"
         # echo
@@ -84,7 +86,7 @@ steps:
     - -c
     - |
 
-      source env.txt
+      source ./workspace/env.txt
 
       # setup preferences
       apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
