@@ -13,38 +13,6 @@
 #  limitations under the License.
 
 steps:
-  #   # Install node dependencies for linting and testing
-  # - name: node
-  #   id: "Install Dependencies"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |-
-  #       cd "$_WORK_DIR"
-  #       npm install --silent --no-fund
-  #   # Run static code analysis and linting
-  # - name: node
-  #   id: "Static Code Analysis"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |-
-  #       cd "$_WORK_DIR"
-  #       npm run apigeelint | tee report.apigeelint.html && \
-  #       if [ ${PIPESTATUS[0]} -ne "0" ]; then exit -1; fi && \
-  #       npm run eslint | tee report.eslint.html && \
-  #       if [ ${PIPESTATUS[0]} -ne "0" ]; then exit -1; fi
-  #   # Run unit tests for custom policy implementations
-  # - name: node
-  #   id: "Unit Test"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |-
-  #       cd "$_WORK_DIR"
-  #       npm run unit-test
-    # Fetch Apigee credentials
-    # and set branch specific config parameters
   - name: 'ubuntu'
     id: "Set configs"
     script: |
@@ -59,17 +27,17 @@ steps:
           echo "export APIGEE_ENV=$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       elif [ "$BRANCH_NAME" = "prod" ]
       then
-          echo "export APIGEE_ENV=$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+          echo "APIGEE_ENV=$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
       else
-          echo "export APIGEE_ENV=$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+          echo "APIGEE_ENV=$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       fi
 
-      echo "export PROXY_NAME=$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
+      echo "PROXY_NAME=$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
 
-  - id: 'Create and deploy bundle with apigeecli'
-    name: ghcr.io/apigee/apigeecli:latest
+  - name: ghcr.io/apigee/apigeecli:latest
+    id: 'Create and deploy bundle with apigeecli'
     script: |
-      #!/usr/bin/env sh
+      #!/bin/bash
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
       APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
