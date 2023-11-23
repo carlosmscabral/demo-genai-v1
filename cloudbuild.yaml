@@ -24,21 +24,23 @@ steps:
       # Config based on branch name
       if [ "$BRANCH_NAME" = "main" ]
       then
-          echo "export APIGEE_ENV=$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       elif [ "$BRANCH_NAME" = "prod" ]
       then
-          echo "APIGEE_ENV=$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+          echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
       else
-          echo "APIGEE_ENV=$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       fi
 
-      echo "PROXY_NAME=$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
+      echo "$(cat ./config/default.json | jq .apiConfig.proxyName)" > /workspace/proxyName.txt
+
+      cat /workspace/apigeeEnv.txt
+      cat /workspace/proxyName.txt
 
   - name: ghcr.io/apigee/apigeecli:latest
     id: 'Create and deploy bundle with apigeecli'
     script: |
-      #!/bin/bash
-
+    
       PROXY_NAME=$(cat /workspace/proxyName.txt)
       APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
 
