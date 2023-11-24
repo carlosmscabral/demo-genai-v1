@@ -60,6 +60,7 @@ steps:
       echo "--- Done fetching registry cli tool"
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
+      API_VERSION=$(cat /workspace/apiVersion.txt)
 
       echo "--- Creating the API in Hub"
       registry rpc get-api --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} &>/dev/null
@@ -74,6 +75,19 @@ steps:
         --api.display_name ${PROXY_NAME} \
         --json
       fi
+  
+      echo "--- Creating the API Version in Hub"
+      registry rpc get-api-version --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/version/${API_VERSION} &>/dev/null
+      if [ $? -eq 0 ]; then
+        echo "--- API Version already exists in Hub. Skip creation."
+      else
+        echo "--- API Version does not exist in Hub. Creating the API Version."
+        registry rpc create-api-version \
+        --parent projects/${_APIHUB_PROJECT}/locations/global/apis/%{PROXY_NAME} \
+        --api_version_id ${API_VERSION}\
+        --json
+      fi
+
 
   # - name: 'ubuntu'
   #   id: 'Create and deploy bundle with apigeecli'
