@@ -33,7 +33,7 @@ steps:
           echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
           #### TODO INJECT HOST TO THE SPEC 
       else
-          #### TODO INJECT HOST TO THE SPEC 
+          #### TODO INJECT HOST TO THE SPECC
           echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       fi
 
