@@ -48,7 +48,7 @@ steps:
 
       echo "--- Downloading necessary packages for step"
       apt-get update > /dev/null
-      apt-get -y install curl zip unzip > /dev/null
+      apt-get -y install curl zip unzip xxd > /dev/null
       echo "--- Downloading finished"
 
       echo "--- Fetching registry cli tool"
