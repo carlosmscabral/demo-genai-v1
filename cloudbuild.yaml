@@ -13,31 +13,31 @@
 #  limitations under the License.
 
 steps:
-  # - name: 'ubuntu'
-  #   id: "Set configs"
-  #   script: |
-  #     #!/usr/bin/env bash
+  - name: 'ubuntu'
+    id: "Set configs"
+    script: |
+      #!/usr/bin/env bash
 
-  #     echo "--- Downloading necessary packages for step"
-  #     apt-get update > /dev/null
-  #     apt-get -y install jq > /dev/null
-  #     echo "--- Downloading finished"
+      echo "--- Downloading necessary packages for step"
+      apt-get update > /dev/null
+      apt-get -y install jq > /dev/null
+      echo "--- Downloading finished"
 
-  #     # Config based on branch name
-  #     if [ "$BRANCH_NAME" = "main" ]
-  #     then
-  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-  #     elif [ "$BRANCH_NAME" = "prod" ]
-  #     then
-  #         echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
-  #     else
-  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-  #     fi
+      # Config based on branch name
+      if [ "$BRANCH_NAME" = "main" ]
+      then
+          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+      elif [ "$BRANCH_NAME" = "prod" ]
+      then
+          echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+      else
+          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+      fi
 
-  #     echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
+      echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
 
-  #     echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
-  #     echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
+      echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
+      echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
 
   - name: 'ubuntu'
     id: "Creation and register new version / spec in API Hub"
