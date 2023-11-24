@@ -27,12 +27,17 @@ steps:
       if [ "$BRANCH_NAME" = "main" ]
       then
           echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+          #### TODO INJECT HOST TO THE SPEC 
       elif [ "$BRANCH_NAME" = "prod" ]
       then
           echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+          #### TODO INJECT HOST TO THE SPEC 
       else
+          #### TODO INJECT HOST TO THE SPEC 
           echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
       fi
+
+      
 
       echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
       echo "$(cat ./config/default.json | jq .apiConfig.apiVersion | tr -d '"')" > /workspace/apiVersion.txt
@@ -65,7 +70,7 @@ steps:
       echo "--- Creating the API in Hub"
       registry rpc get-api --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} &>/dev/null
       if [ $? -eq 0 ]; then
-        echo "--- API already exists in Hub. Skip creation."
+        echo "--- API already exists in Hub. Skipping creation."
       else
         echo "--- API does not exist in Hub. Creating the API."
         registry rpc create-api \
@@ -104,32 +109,32 @@ steps:
 
 
 
-  # - name: 'ubuntu'
-  #   id: 'Create and deploy bundle with apigeecli'
-  #   script: |
-  #     #!/usr/bin/env bash
+  - name: 'ubuntu'
+    id: 'Create and deploy bundle with apigeecli'
+    script: |
+      #!/usr/bin/env bash
 
-  #     echo "--- Downloading necessary packages for step"
-  #     apt-get update > /dev/null
-  #     apt-get -y install jq curl zip unzip > /dev/null
-  #     echo "--- Downloading finished"
+      echo "--- Downloading necessary packages for step"
+      apt-get update > /dev/null
+      apt-get -y install jq curl zip unzip > /dev/null
+      echo "--- Downloading finished"
 
-  #     echo "--- Fetching apigeecli"
-  #     curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash > /dev/null
-  #     export PATH=$PATH:$HOME/.apigeecli/bin
-  #     echo "--- Done fetching apigeecli"
+      echo "--- Fetching apigeecli"
+      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash > /dev/null
+      export PATH=$PATH:$HOME/.apigeecli/bin
+      echo "--- Done fetching apigeecli"
 
-  #     PROXY_NAME=$(cat /workspace/proxyName.txt)
-  #     APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
+      PROXY_NAME=$(cat /workspace/proxyName.txt)
+      APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
 
-  #     # setup preferences
-  #     apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
-  #     apigeecli token cache --metadata-token
+      # setup preferences
+      apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
+      apigeecli token cache --metadata-token
 
-  #     echo "--- Creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
-  #     REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
-  #     apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
-  #     echo "--- Done creating and deploying ${PROXY_NAME} with revision ${REV} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
+      echo "--- Creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
+      REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
+      apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
+      echo "--- Done creating and deploying ${PROXY_NAME} with revision ${REV} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
 
 
   #   # Deploy using the Apigee credentials from above
