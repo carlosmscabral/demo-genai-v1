@@ -85,6 +85,7 @@ steps:
         registry rpc create-api-version \
         --parent projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} \
         --api_version_id ${API_VERSION} \
+        --api_version.display_name ${API_VERSION} \
         --json
       fi
 
