@@ -61,8 +61,7 @@ steps:
 
       registry rpc create-api \
         --parent projects/${_APIHUB_PROJECT}/locations/global \
-        --api_id ${PROXY_NAME} \
-        --api.availability GENERAL \
+        --api.name ${PROXY_NAME} \
         --json
 
   # - name: 'ubuntu'
