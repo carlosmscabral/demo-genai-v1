@@ -13,31 +13,31 @@
 #  limitations under the License.
 
 steps:
-  - name: 'ubuntu'
-    id: "Set configs"
-    script: |
-      #!/usr/bin/env bash
+  # - name: 'ubuntu'
+  #   id: "Set configs"
+  #   script: |
+  #     #!/usr/bin/env bash
 
-      echo "--- Downloading necessary packages for step"
-      apt-get update > /dev/null
-      apt-get -y install jq > /dev/null
-      echo "--- Downloading finished"
+  #     echo "--- Downloading necessary packages for step"
+  #     apt-get update > /dev/null
+  #     apt-get -y install jq > /dev/null
+  #     echo "--- Downloading finished"
 
-      # Config based on branch name
-      if [ "$BRANCH_NAME" = "main" ]
-      then
-          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-      elif [ "$BRANCH_NAME" = "prod" ]
-      then
-          echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
-      else
-          echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
-      fi
+  #     # Config based on branch name
+  #     if [ "$BRANCH_NAME" = "main" ]
+  #     then
+  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+  #     elif [ "$BRANCH_NAME" = "prod" ]
+  #     then
+  #         echo "$_APIGEE_PROD_ENV" > /workspace/apigeeEnv.txt
+  #     else
+  #         echo "$_APIGEE_TEST_ENV" > /workspace/apigeeEnv.txt
+  #     fi
 
-      echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
+  #     echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
 
-      echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
-      echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
+  #     echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
+  #     echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
 
   - name: 'ubuntu'
     id: "Creation and register new version / spec in API Hub"
@@ -51,37 +51,38 @@ steps:
 
       echo "--- Fetching registry cli tool"
       curl -L https://raw.githubusercontent.com/apigee/registry/main/downloadLatest.sh | sh - >/dev/null
+      export PATH=\$PATH:\$HOME/.registry/bin
       registry config configurations create hosted \
         --registry.address=apigeeregistry.googleapis.com:443 \
         --registry.project=${_APIHUB_PROJECT}
       echo "--- Done fetching registry cli tool"
 
-  - name: 'ubuntu'
-    id: 'Create and deploy bundle with apigeecli'
-    script: |
-      #!/usr/bin/env bash
+  # - name: 'ubuntu'
+  #   id: 'Create and deploy bundle with apigeecli'
+  #   script: |
+  #     #!/usr/bin/env bash
 
-      echo "--- Downloading necessary packages for step"
-      apt-get update > /dev/null
-      apt-get -y install jq curl zip unzip > /dev/null
-      echo "--- Downloading finished"
+  #     echo "--- Downloading necessary packages for step"
+  #     apt-get update > /dev/null
+  #     apt-get -y install jq curl zip unzip > /dev/null
+  #     echo "--- Downloading finished"
 
-      echo "--- Fetching apigeecli"
-      curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash > /dev/null
-      export PATH=$PATH:$HOME/.apigeecli/bin
-      echo "--- Done fetching apigeecli"
+  #     echo "--- Fetching apigeecli"
+  #     curl -L https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash > /dev/null
+  #     export PATH=$PATH:$HOME/.apigeecli/bin
+  #     echo "--- Done fetching apigeecli"
 
-      PROXY_NAME=$(cat /workspace/proxyName.txt)
-      APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
+  #     PROXY_NAME=$(cat /workspace/proxyName.txt)
+  #     APIGEE_ENV=$(cat /workspace/apigeeEnv.txt)
 
-      # setup preferences
-      apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
-      apigeecli token cache --metadata-token
+  #     # setup preferences
+  #     apigeecli prefs set --nocheck=true -o "$_DEPLOYMENT_ORG"
+  #     apigeecli token cache --metadata-token
 
-      echo "--- Creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
-      REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
-      apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
-      echo "--- Done creating and deploying ${PROXY_NAME} with revision ${REV} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
+  #     echo "--- Creating and deploying ${PROXY_NAME} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
+  #     REV=$(apigeecli apis create bundle -n "${PROXY_NAME}" -f "./apiproxy" --disable-check | jq '.revision' -r)
+  #     apigeecli apis deploy --wait --name "${PROXY_NAME}" --ovr --rev "${REV}" --env "${APIGEE_ENV}" --disable-check
+  #     echo "--- Done creating and deploying ${PROXY_NAME} with revision ${REV} on environment ${APIGEE_ENV} of org ${_DEPLOYMENT_ORG}"
 
 
   #   # Deploy using the Apigee credentials from above
