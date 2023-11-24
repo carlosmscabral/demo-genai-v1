@@ -87,21 +87,6 @@ steps:
         --api_version_id ${API_VERSION} \
         --api_version.display_name ${API_VERSION} \
         --json
-      fi
-
-      echo "--- Creating the API Version in Hub"
-      registry rpc get-api-version --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/version/${API_VERSION} &>/dev/null
-      if [ $? -eq 0 ]; then
-        echo "--- API Version already exists in Hub. Skip creation."
-      else
-        echo "--- API Version does not exist in Hub. Creating the API Version."
-        registry rpc create-api-version \
-        --parent projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} \
-        --api_version_id ${API_VERSION} \
-        --api_version.display_name ${API_VERSION} \
-        --json
-
-        sleep 5
 
         registry rpc create-api-spec \
         --parent=projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/version/${API_VERSION} \
@@ -110,7 +95,10 @@ steps:
         --api_spec.filename "openapi.yaml" \
         --api_spec.mime_type "application/x.openapi?version=3" \
         --json
+        
       fi
+
+
 
   # - name: 'ubuntu'
   #   id: 'Create and deploy bundle with apigeecli'
