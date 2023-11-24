@@ -55,8 +55,15 @@ steps:
       registry config configurations create hosted \
         --registry.address=apigeeregistry.googleapis.com:443 \
         --registry.project=${_APIHUB_PROJECT}
-      registry get apis/
       echo "--- Done fetching registry cli tool"
+
+      PROXY_NAME=$(cat /workspace/proxyName.txt)
+
+      registry rpc create-api \
+        --parent projects/${_APIHUB_PROJECT}/locations/global \
+        --api_id ${PROXY_NAME} \
+        --api.availability GENERAL \
+        --json
 
   # - name: 'ubuntu'
   #   id: 'Create and deploy bundle with apigeecli'
