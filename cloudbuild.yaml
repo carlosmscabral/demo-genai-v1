@@ -81,7 +81,7 @@ steps:
       if [ $? -eq 0 ]; then
         echo "--- API Version already exists in Hub. Skipping creation."
         registry rpc update-api-spec \
-        --parent=projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/versions/${API_VERSION}/specs/openapi \
+        --api_spec.name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/versions/${API_VERSION}/specs/openapi \
         --api_spec.contents `xxd -c 10000 -p api/openapi.yaml` \
         --json
       else
