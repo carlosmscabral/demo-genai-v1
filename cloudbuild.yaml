@@ -61,11 +61,12 @@ steps:
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
 
-      registry rpc get-api --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} 2>&1 dev/null
+      echo "--- Creating the API in Hub"
+      registry rpc get-api --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME} 2>&1 /dev/null
       if [ $? -eq 0 ]; then
-        echo "API already exists in Hub. Skip creation."
+        echo "--- API already exists in Hub. Skip creation."
       else
-        echo "API is new in Hub. Creating the API."
+        echo "--- API is new in Hub. Creating the API."
         registry rpc create-api \
         --parent projects/${_APIHUB_PROJECT}/locations/global \
         --api_id ${PROXY_NAME} \
