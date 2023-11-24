@@ -55,6 +55,7 @@ steps:
       registry config configurations create hosted \
         --registry.address=apigeeregistry.googleapis.com:443 \
         --registry.project=${_APIHUB_PROJECT}
+      registry get apis/
       echo "--- Done fetching registry cli tool"
 
   # - name: 'ubuntu'
