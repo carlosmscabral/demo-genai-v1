@@ -88,14 +88,13 @@ steps:
         --api_version.display_name ${API_VERSION} \
         --json
 
-        registry rpc create-api-spec \
-        --parent=projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/version/${API_VERSION} \
-        --api_spec_id openapi \
-        --api_spec.contents `xxd -c 10000 -p api/openapi.yaml` \
-        --api_spec.filename "openapi.yaml" \
-        --api_spec.mime_type "application/x.openapi?version=3" \
-        --json
-        
+        # registry rpc create-api-spec \
+        # --parent=projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}/version/${API_VERSION} \
+        # --api_spec_id openapi \
+        # --api_spec.contents `xxd -c 10000 -p api/openapi.yaml` \
+        # --api_spec.filename "openapi.yaml" \
+        # --api_spec.mime_type "application/x.openapi?version=3" \
+        # --json
       fi
 
 
