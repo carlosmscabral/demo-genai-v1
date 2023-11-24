@@ -35,9 +35,11 @@ steps:
       fi
 
       echo "$(cat ./config/default.json | jq .apiConfig.proxyName | tr -d '"')" > /workspace/proxyName.txt
+      echo "$(cat ./config/default.json | jq .apiConfig.apiVersion | tr -d '"')" > /workspace/apiVersion.txt
 
       echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
-      echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
+      echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)"
+      echo "--- Creating a version of the API with version $(cat /workspace/apiVersion.txt)" 
 
   - name: 'ubuntu'
     id: "Creation and register new version / spec in API Hub"
@@ -59,12 +61,18 @@ steps:
 
       PROXY_NAME=$(cat /workspace/proxyName.txt)
 
-      registry rpc create-api \
+      registry rpc get-api --name projects/${_APIHUB_PROJECT}/locations/global/apis/${PROXY_NAME}
+      if [ $? -eq 0 ]; then
+        echo "API already exists in Hub. Skip creation."
+      else
+        echo "API is new in Hub. Creating the API."
+        registry rpc create-api \
         --parent projects/${_APIHUB_PROJECT}/locations/global \
         --api_id ${PROXY_NAME} \
         --api.name ${PROXY_NAME} \
         --api.display_name ${PROXY_NAME} \
         --json
+      fi
 
   # - name: 'ubuntu'
   #   id: 'Create and deploy bundle with apigeecli'
