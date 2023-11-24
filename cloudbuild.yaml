@@ -39,6 +39,22 @@ steps:
       echo "--- Using environment $(cat /workspace/apigeeEnv.txt) for deployment"
       echo "--- Deploying proxy with name $(cat /workspace/proxyName.txt)" 
 
+  - name: 'ubuntu'
+    id: "Creation and register new version / spec in API Hub"
+    script: |
+      #!/usr/bin/env bash
+
+      echo "--- Downloading necessary packages for step"
+      apt-get update > /dev/null
+      apt-get -y install curl zip unzip > /dev/null
+      echo "--- Downloading finished"
+
+      echo "--- Fetching registry cli tool"
+      curl -L https://raw.githubusercontent.com/apigee/registry/main/downloadLatest.sh | sh - >/dev/null
+      registry config configurations create hosted \
+        --registry.address=apigeeregistry.googleapis.com:443 \
+        --registry.project=${_APIHUB_PROJECT}
+      echo "--- Done fetching registry cli tool"
 
   - name: 'ubuntu'
     id: 'Create and deploy bundle with apigeecli'
@@ -117,3 +133,4 @@ substitutions:
   _APIGEE_PROD_ENV: prod
   _DEV_HOST: dev.35.227.240.213.nip.io
   _PROD_HOST: prod.35.227.240.213.nip.io
+  _APIHUB_PROJECT: cabral-apigee
