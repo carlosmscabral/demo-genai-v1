@@ -66,7 +66,7 @@ steps:
       if [ $? -eq 0 ]; then
         echo "--- API already exists in Hub. Skip creation."
       else
-        echo "--- API is new in Hub. Creating the API."
+        echo "--- API does not exist in Hub. Creating the API."
         registry rpc create-api \
         --parent projects/${_APIHUB_PROJECT}/locations/global \
         --api_id ${PROXY_NAME} \
