@@ -1,8 +1,10 @@
 openapi: 3.0.0
 info:
-  title: myProxyName-v1
-  description: My API Description
+  title: genai-v1-summarize
+  description: genai-v1-summarize
   version: 1.0.0
+servers:
+ - url: https://dev.35.227.240.213.nip.io/v1/genai
 paths:
   /summarize:
     post:

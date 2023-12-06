@@ -1,6 +1,6 @@
 {
   "apiConfig": {
-    "proxyName": "myproxyname-v1",
+    "proxyName": "myproxyname-v11",
     "apiVersion": "1.0.0",
     "apiDescription": "My API Description",
     "apiBasePath": "myproxyname/v1"
